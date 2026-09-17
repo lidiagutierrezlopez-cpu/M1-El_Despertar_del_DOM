@@ -1,0 +1,40 @@
+#tablero{
+     display: flex;
+     flex-wrap: wrap;
+     gap: 20px;
+     padding: 20px;
+}
+.postit{
+     width: 200px;
+     min-height: 200px;
+     background-color:#fff59d;
+     padding: 15px;
+     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+     position: relative;
+}
+
+.postit:hover {
+  transform: rotate(0deg) !important;
+}
+
+.contenido{
+     width: 100%;
+     height: 150px;
+     outline: none;
+     font-size: 16px;
+}
+
+.contenido:empty::before {
+  content: 'Escribe aquí...';
+  color: #999;
+}
+
+.botonBorrar {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background: none;
+  border: none;
+  font-size: 18px;
+  color: #555;
+}

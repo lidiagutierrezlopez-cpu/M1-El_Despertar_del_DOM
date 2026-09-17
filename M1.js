@@ -8,8 +8,11 @@ function agregar(){
      // Creacion de Post-it
      let nota = document.createElement('div');
      nota.classList.add('postit');
-     nota.setAttribute('contenteditable', 'true');
-     nota.textContent = 'Escribe aquí...';
+
+     // Contenido del Post-it para escribir
+     let contenido = document.createElement('div');
+     contenido.classList.add('contenido');
+     contenido.setAttribute('contenteditable', 'true');
 
      // Rotación aleatoria entre -5 y 5 porciento
      let angulo = Math.random() * 10 - 5;
@@ -22,6 +25,7 @@ function agregar(){
      botonBorrar.textContent = 'x';
      botonBorrar.setAttribute('contenteditable', 'false');
 
+     nota.appendChild(contenido);
      nota.appendChild(botonBorrar);
      tablero.appendChild(nota);
 }
