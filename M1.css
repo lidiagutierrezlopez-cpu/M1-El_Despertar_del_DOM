@@ -3,11 +3,11 @@
      flex-wrap: wrap;
      gap: 20px;
      padding: 20px;
+     margin-left: 120px;
 }
 .postit{
      width: 200px;
      min-height: 200px;
-     background-color:#fff59d;
      padding: 15px;
      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
      position: relative;
@@ -37,4 +37,16 @@
   border: none;
   font-size: 18px;
   color: #555;
+}
+
+#panelControl{
+     position: fixed;
+     top: 0px;
+     left: 0px;
+     background-color: #a2e8f6;
+     padding: 15px 20px;
+     display: flex;
+     flex-direction: column;
+     gap: 10px;
+     z-index: 100;
 }
