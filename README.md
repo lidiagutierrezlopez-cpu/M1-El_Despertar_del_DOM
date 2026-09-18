@@ -26,8 +26,8 @@ Verifiqué cada cambio probándolo en el navegador usando la consola como hemos 
 Yo escribí todo el HTML y la gran mayoría del CSS a mano, y me aseguré de mantener una nomenclatura de JavaScript clara y legible.
 
 ## Autopsia
-**1. Delegación de eventos**
+**1. Delegación de eventos.**
 Descarté poner addEventListener en cada botón porque con muchos post-its se acumulan listeners innecesarios. En vez de esto, puse un único addEventListener en el tablero que revisa, cuando se hace un click, si el elemento pulsado tiene clase botonBorrar. De esta manera una sola función controla el borrado de todas las notas.
 
-**2. Separar el texto editable**
+**2. Separar el texto editable.**
 Al principio tenía contenteditable="true" en todo el post-it, pero esto causaba que podía eliminar el boton de borrar sin querer. Para arreglar esto, dividí el post-it en dos, un div .contenido que es editable y el boton que no lo es. Esto arregló el problema del todo. Parecido a este problema, al hacer que los post-its se pudieran mover me di cuenta de que no era fácil saber dónde había que hacer click para arrastrarlos. Por eso añadí una sección .agarre en la parte superior, que es la única zona que activa el arrastre.
