@@ -10,7 +10,13 @@ const coloresOscuros = ['#7d6f1f', '#2f5c3f', '#1f4e66', '#5c3966', '#6b3350'];
 tablero.addEventListener('click', borrar);
 botonAgregar.addEventListener('click', agregar);
 botonReiniciar.addEventListener('click', reiniciar);
+
 botonOscuro.addEventListener('click', alternarModoOscuro);
+document.addEventListener('keydown', function(evento){
+     if(evento.key === 'o'){
+          alternarModoOscuro();
+     }
+});
 
 tablero.addEventListener('mousedown', apretar);
 document.addEventListener('mousemove', arrastrar);
