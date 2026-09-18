@@ -5,16 +5,23 @@
      padding: 20px;
      margin-left: 120px;
 }
+
 .postit{
      width: 200px;
      min-height: 200px;
-     padding: 15px;
      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
      position: relative;
+     box-sizing: border-box;
+     transition: transform 0.15s ease;
 }
 
-.postit:hover {
-  transform: rotate(0deg) !important;
+.agarre {
+     height: 34px;
+     background-color: rgba(0, 0, 0, 0.08);
+     cursor: grab;
+}
+.agarre:active {
+    cursor: grabbing;
 }
 
 .contenido{
@@ -22,21 +29,24 @@
      height: 150px;
      outline: none;
      font-size: 16px;
+     box-sizing: border-box;
+     border-left: 10px solid transparent;
+     border-right: 10px solid transparent;
 }
 
 .contenido:empty::before {
-  content: 'Escribe aquí...';
-  color: #999;
+     content: 'Escribe aquí...';
+     color: #999;
 }
 
 .botonBorrar {
-  position: absolute;
-  top: 5px;
-  right: 5px;
-  background: none;
-  border: none;
-  font-size: 18px;
-  color: #555;
+     position: absolute;
+     top: 5px;
+     right: 5px;
+     background: none;
+     border: none;
+     font-size: 18px;
+     color: #555;
 }
 
 #panelControl{
@@ -49,4 +59,41 @@
      flex-direction: column;
      gap: 10px;
      z-index: 100;
+     border-bottom-right-radius: 20px;
 }
+
+body{
+     transition: background-color 0.3s, color 0.3s;
+}
+
+body.oscuro{
+     background-color: #121212;
+     color: #f0f0f0;
+}
+
+body.oscuro #panelControl{
+     background-color: #2a2a2a;
+     color: #f0f0f0;
+}
+
+body.oscuro button {
+     background-color: #444;
+     color: #f0f0f0;
+     border: 1px solid #666;
+}
+
+body.oscuro .contenido {
+     color: #cecaca;
+}
+
+body.oscuro .botonBorrar {
+     position: absolute;
+     top: 5px;
+     right: 5px;
+     background: none;
+     border: none;
+     font-size: 18px;
+     color: #8f8e8e;
+}
+
+  
