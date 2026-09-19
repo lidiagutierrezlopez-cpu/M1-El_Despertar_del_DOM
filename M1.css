@@ -87,12 +87,8 @@ body.oscuro .contenido {
 }
 
 body.oscuro .botonBorrar {
-     position: absolute;
-     top: 5px;
-     right: 5px;
      background: none;
      border: none;
-     font-size: 18px;
      color: #8f8e8e;
 }
 

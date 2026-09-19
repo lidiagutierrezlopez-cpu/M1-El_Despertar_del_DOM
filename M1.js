@@ -49,7 +49,7 @@ function agregar(){
 
      // Rotación aleatoria entre -5 y 5 porciento
      let angulo = Math.random() * 10 - 5;
-     nota.style.transform = 'rotate(' + angulo + 'deg)';
+     nota.style.transform = `rotate(${angulo}deg)`;
 
      // Botón para borrar
      let botonBorrar = document.createElement('button');
@@ -85,8 +85,8 @@ function apretar (evento){
           offsetY = evento.clientY - rect.top;
 
           notaArrastrando.style.position = 'absolute';
-          notaArrastrando.style.left = (rect.left + window.scrollX) + 'px';
-          notaArrastrando.style.top = (rect.top + window.scrollY) + 'px';
+          notaArrastrando.style.left = `${rect.left + window.scrollX}px`;
+          notaArrastrando.style.top = `${rect.top + window.scrollY}px`;
           
           zIndexActual++;
           notaArrastrando.style.zIndex = zIndexActual;
@@ -97,15 +97,15 @@ function apretar (evento){
 
 function arrastrar(evento){
      if(notaArrastrando){
-          notaArrastrando.style.left = (evento.clientX - offsetX + window.scrollX) + 'px';
-          notaArrastrando.style.top = (evento.clientY - offsetY + window.scrollY) + 'px';
+          notaArrastrando.style.left = `${evento.clientX - offsetX + window.scrollX}px`;
+          notaArrastrando.style.top = `${evento.clientY - offsetY + window.scrollY}px`;
      }
 }
 
 function soltar(){
      if(notaArrastrando){
           let angulo = Math.random() * 10 - 5;
-          notaArrastrando.style.transform = 'rotate(' + angulo + 'deg)';
+          notaArrastrando.style.transform = `rotate(${angulo}deg)`;
      }
      notaArrastrando = null;
 }
