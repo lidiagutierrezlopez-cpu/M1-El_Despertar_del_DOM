@@ -14,12 +14,13 @@ Aplicación web interactiva que permite crear, editar y borrar post-its en un ta
 - Rotación aleatoria: cada nota se coloca con una ligera inclinacion de entre -5° a 5°.
 - Reiniciar tablero: botón que borra todos los post-its de golpe, incluye una confirmación previa, para evitar borrados accidentales.
 - Panel de control: bloque fijo en la esquina superior izquierda con todos los controles y el título de la página.
-- Modo oscuro: cambia el color de toda la página, incluido los post-its. Se puede activar con el boton o con la tecla 'o'.
+- Modo oscuro: cambia el color de toda la página, incluido los post-its. Se puede activar con el boton o con la tecla 'TAB'.
+- Guardado en 'localStorage' para no perder las notas cuando se recarga la página. Se guarda todo excepto ángulo, ya que prefiero que cambie al recargar.
 
 ## Uso de IA
 Usé Claude como apoyo para las partes de JavaScript, sobre todo drag & drop, delegación de eventos y depuración de errores. Dos prompts que usé:
 - "Cómo puedo hacer que un elemento se mueva por la pantalla siguiendo al ratón?"
-- "Al editar el texto a veces se me borra el botón de la cruz, como lo puedo arreglar?"
+- ""Cómo puedo hacer que los datos de mi página no se borren al recargarla?"
 
 Verifiqué cada cambio probándolo en el navegador usando la consola como hemos visto en clase. Usé tambien los apuntes de esta asignatura y de la asignatura que cursamos en 1º de carrera para recordar ciertos comandos y para escribir el código de forma más correcta y ordenada.
 
