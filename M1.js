@@ -73,6 +73,7 @@ function agregar(texto = '', indiceColor = null, posX = null, posY = null){
      botonBorrar.textContent = 'x';
      botonBorrar.setAttribute('contenteditable', 'false');
 
+     // Si tiene una posicion el post-it, se coloca ahí
      if(posX !== null && posY !== null){
           nota.style.position = 'absolute';
           nota.style.left = posX;
