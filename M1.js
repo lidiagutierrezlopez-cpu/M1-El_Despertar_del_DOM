@@ -41,7 +41,7 @@ let zIndexActual = 1000;
 let modoOscuro = false;
 
 // Añadir un post-it
-function agregar(texto = '', indiceColor = null){
+function agregar(texto = '', indiceColor = null, posX = null, posY = null){
      // Creacion de Post-it
      let nota = document.createElement('div');
      nota.classList.add('postit');
@@ -72,6 +72,14 @@ function agregar(texto = '', indiceColor = null){
      botonBorrar.classList.add('botonBorrar');
      botonBorrar.textContent = 'x';
      botonBorrar.setAttribute('contenteditable', 'false');
+
+     if(posX !== null && posY !== null){
+          nota.style.position = 'absolute';
+          nota.style.left = posX;
+          nota.style.top = posY;
+          nota.dataset.posX = posX;
+          nota.dataset.posY = posY;
+     }
 
      // Crea el post-it en el HTML
      nota.appendChild(agarre);
@@ -135,6 +143,11 @@ function soltar(){
           // Se cambia el ángulo del post-it al soltarlo
           let angulo = Math.random() * 10 - 5;
           notaArrastrando.style.transform = `rotate(${angulo}deg)`;
+          
+          // Guardamos la posicion del post-it al soltarlo
+          notaArrastrando.dataset.posX = notaArrastrando.style.left;
+          notaArrastrando.dataset.posY = notaArrastrando.style.top;
+
           guardarEstado();
      }
      notaArrastrando = null;
@@ -166,7 +179,9 @@ function guardarEstado(){
           let contenido = nota.querySelector('.contenido');
           datos.push({
                texto: contenido.textContent,
-               colorIndice: nota.dataset.colorIndice
+               colorIndice: nota.dataset.colorIndice,
+               posX: nota.dataset.posX || null,
+               posY: nota.dataset.posY || null
           });
      });
      localStorage.setItem('postits', JSON.stringify(datos));
@@ -179,7 +194,7 @@ function cargarEstado(){
           let datos = JSON.parse(datosGuardados);
 
           datos.forEach(function(nota){
-               agregar(nota.texto, Number(nota.colorIndice));
+               agregar(nota.texto, Number(nota.colorIndice), nota.posX, nota.posY);
           });
      }
 
