@@ -62,6 +62,26 @@
      border-bottom-right-radius: 20px;
 }
 
+#aviso{
+     position: fixed;
+     bottom: 20px;
+     left: 50%;
+     transform: translateX(-50%) translateY(20px);
+     background-color: #cdcccc;
+     color: black;
+     padding: 12px 20px;
+     border-radius: 8px;
+     font-size: 14px;
+     opacity: 0;
+     pointer-events: none;
+     transition: opacity 0.3s, transform 0.3s;
+     z-index: 999;
+}
+#aviso.visible{
+     opacity: 1;
+     transform: translateX(-50%) translateY(0);
+}
+
 button {
      border: 1px solid transparent;
      padding: 10px;
@@ -88,18 +108,23 @@ body.oscuro #panelControl{
      color: #f0f0f0;
 }
 
+body.oscuro #aviso{
+     background-color: #2a2a2a;
+     color: #b9b9b9;
+}
+
 body.oscuro button {
      background-color: #444;
-     color: #f0f0f0;
+     color: #b9b9b9;
 }
 
 body.oscuro .contenido {
-     color: #cecaca;
+     color: #f0f0f0;
 }
 
 body.oscuro .botonBorrar {
      background: none;
-     color: #aba9a9;
+     color: #969696;
 }
 
   

@@ -16,6 +16,7 @@ Aplicación web interactiva que permite crear, editar y borrar post-its en un ta
 - Panel de control: bloque fijo en la esquina superior izquierda con todos los controles y el título de la página.
 - Modo oscuro: cambia el color de toda la página, incluido los post-its. Se puede activar con el boton o con la tecla 'TAB'.
 - Guardado en 'localStorage' para no perder las notas cuando se recarga la página. Se guarda todo excepto ángulo, ya que prefiero que cambie al recargar.
+- Aviso de espacio agotado, si el texto llega al límite del espacio disponible, aparece un aviso en la pantalla que desaparece en unos segundos.
 
 ## Uso de IA
 Usé Claude como apoyo para las partes de JavaScript, sobre todo drag & drop, delegación de eventos y depuración de errores. Dos prompts que usé:
@@ -32,3 +33,6 @@ Descarté poner addEventListener en cada botón porque con muchos post-its se ac
 
 **2. Separar el texto editable.**
 Al principio tenía contenteditable="true" en todo el post-it, pero esto causaba que podía eliminar el boton de borrar sin querer. Para arreglar esto, dividí el post-it en dos, un div .contenido que es editable y el boton que no lo es. Esto arregló el problema del todo. Parecido a este problema, al hacer que los post-its se pudieran mover me di cuenta de que no era fácil saber dónde había que hacer click para arrastrarlos. Por eso añadí una sección .agarre en la parte superior, que es la única zona que activa el arrastre.
+
+**3. Estado de arrastre agrupado en un objeto `estado`.**
+Al principio tenía `notaArrastrando`, `offsetX`, `offsetY`, etc. como variables globales sueltas. Las agrupé en un único objeto `estado` para dejar claro que representan un mismo concepto (el estado de la interacción del usuario) y reducir variables sueltas en el ámbito global.

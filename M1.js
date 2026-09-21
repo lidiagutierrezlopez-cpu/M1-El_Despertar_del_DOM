@@ -9,6 +9,9 @@ const botonOscuro = document.querySelector('#botonOscuro');
 const colores = ['#fff59d', '#d2fad4', '#b3e5fc', '#efc3f7', '#fdbfe2'];
 const coloresOscuros = ['#7d6f1f', '#2f5c3f', '#1f4e66', '#5c3966', '#6b3350'];
 
+const aviso = document.querySelector('#aviso');
+let timeoutAviso = null;
+
 // Escucha cuando clickas el tablero y los botones
 tablero.addEventListener('click', borrar);
 botonAgregar.addEventListener('click', function(){agregar();});
@@ -31,12 +34,17 @@ document.addEventListener('mouseup', soltar);
 // Escucha cuando escribes para guardar el estado de la página y mirar que no te pases del post-it
 tablero.addEventListener('input', escritura);
 
-let notaArrastrando = null;
-let offsetX = 0;
-let offsetY = 0;
-let zIndexActual = 1000;
-let modoOscuro = false;
+// Variables globales que controlan el estado de la página
+const estado = {
+     notaArrastrando: null,
+     offsetX: 0,
+     offsetY: 0,
+     zIndexActual: 1000,
+     modoOscuro: false
+}
 
+
+/* CREACIÓN Y ELIMINACIÓN DE POST-ITS */
 // Añadir un post-it
 function agregar(texto = '', indiceColor = null, posX = null, posY = null, zIndex = null){
      // Creacion de Post-it
@@ -48,7 +56,7 @@ function agregar(texto = '', indiceColor = null, posX = null, posY = null, zInde
           indiceColor = Math.floor(Math.random() * colores.length);
      }
      nota.dataset.colorIndice = indiceColor;
-     nota.style.backgroundColor = modoOscuro ? coloresOscuros[indiceColor] : colores[indiceColor];
+     nota.style.backgroundColor = obtenerColorPostit(indiceColor);
 
      // Agarre para poder mover el Post-it facilmente
      let agarre = document.createElement('div');
@@ -62,7 +70,7 @@ function agregar(texto = '', indiceColor = null, posX = null, posY = null, zInde
      contenido.dataset.textoAnterior = texto;
 
      // Rotación aleatoria entre -5 y 5 porciento
-     let angulo = Math.random() * 10 - 5;
+     let angulo = generarAngulo();
      nota.style.transform = `rotate(${angulo}deg)`;
 
      // Botón para borrar
@@ -107,57 +115,74 @@ function borrar(evento){
 function reiniciar(){
      let confirmar = confirm('¿Seguro que quieres borrar todos los post-its?');
      if(confirmar){
+          /*   innerHTML vacía todo el tablero, un bucle remove() sería
+               innecesario porque no hay que conservar nada del contenido */
           tablero.innerHTML = '';
           guardarEstado();
      }
 }
 
+
+
+/* MOVER POST-ITS */
 // Cuando apretes el agarre del post-it:
 function apretar (evento){
      if(evento.target.classList.contains('agarre')){
-          notaArrastrando = evento.target.parentElement;
+          estado.notaArrastrando = evento.target.parentElement;
 
           // Se calcula la posicion
-          let rect = notaArrastrando.getBoundingClientRect();
-          offsetX = evento.clientX - rect.left;
-          offsetY = evento.clientY - rect.top;
+          let {left, top} = estado.notaArrastrando.getBoundingClientRect();
+          estado.offsetX = evento.clientX - left;
+          estado.offsetY = evento.clientY - top;
 
-          notaArrastrando.style.position = 'absolute';
-          notaArrastrando.style.left = `${rect.left + window.scrollX}px`;
-          notaArrastrando.style.top = `${rect.top + window.scrollY}px`;
+          estado.notaArrastrando.style.position = 'absolute';
+          estado.notaArrastrando.style.left = `${left + window.scrollX}px`;
+          estado.notaArrastrando.style.top = `${top + window.scrollY}px`;
           
           // El post-it se superpone al resto
-          zIndexActual++;
-          notaArrastrando.style.zIndex = zIndexActual;
-          notaArrastrando.dataset.zIndex = zIndexActual;
+          estado.zIndexActual++;
+          estado.notaArrastrando.style.zIndex = estado.zIndexActual;
+          estado.notaArrastrando.dataset.zIndex = estado.zIndexActual;
 
           // Se hace más grande
-          notaArrastrando.style.transform = 'scale(1.1)';
+          estado.notaArrastrando.style.transform = 'scale(1.1)';
      }
 }
 
 // Cuando arrastras el agarre del post-it:
 function arrastrar(evento){
-     if(notaArrastrando){
-          notaArrastrando.style.left = `${evento.clientX - offsetX + window.scrollX}px`;
-          notaArrastrando.style.top = `${evento.clientY - offsetY + window.scrollY}px`;
+     if(estado.notaArrastrando){
+          estado.notaArrastrando.style.left = `${evento.clientX - estado.offsetX + window.scrollX}px`;
+          estado.notaArrastrando.style.top = `${evento.clientY - estado.offsetY + window.scrollY}px`;
      }
 }
 
 // Cuando sueltas el agarre del post-it:
 function soltar(){
-     if(notaArrastrando){
+     if(estado.notaArrastrando){
           // Se cambia el ángulo del post-it al soltarlo
-          let angulo = Math.random() * 10 - 5;
-          notaArrastrando.style.transform = `rotate(${angulo}deg)`;
+          let angulo = generarAngulo();
+          estado.notaArrastrando.style.transform = `rotate(${angulo}deg)`;
           
           // Guardamos la posicion del post-it al soltarlo
-          notaArrastrando.dataset.posX = notaArrastrando.style.left;
-          notaArrastrando.dataset.posY = notaArrastrando.style.top;
+          estado.notaArrastrando.dataset.posX = estado.notaArrastrando.style.left;
+          estado.notaArrastrando.dataset.posY = estado.notaArrastrando.style.top;
 
           guardarEstado();
      }
-     notaArrastrando = null;
+     estado.notaArrastrando = null;
+}
+
+/* ESCRITURA EN LOS POST-ITS */
+// Crea un aviso pasando un mensaje como parámetro
+function mostrarAviso(mensaje){
+     aviso.textContent = mensaje;
+     aviso.classList.add('visible');
+
+     clearTimeout(timeoutAviso);
+     timeoutAviso = setTimeout(function(){
+          aviso.classList.remove('visible');
+     }, 2000);
 }
 
 // Cuando escribes, se guarda el contenido y se mira que no te pases del post-it
@@ -166,9 +191,11 @@ function escritura(evento){
           let contenido = evento.target;
 
           if(contenido.scrollHeight > contenido.clientHeight){
-               alert('Ya no tienes espacio para escribir en este post-it');
+               mostrarAviso('Ya no tienes espacio para escribir en este post-it');
+               
                // Esto elimina lo ultimo que has escrito que sale del post-it
                contenido.textContent = contenido.dataset.textoAnterior || '';
+               moverCursorAlFinal(contenido);
           } else {
                contenido.dataset.textoAnterior = contenido.textContent;
           }
@@ -176,23 +203,21 @@ function escritura(evento){
      }
 }
 
-// Cambia de modo claro a oscuro y viceversa
-function alternarModoOscuro(){
-     modoOscuro = !modoOscuro;
-     document.body.classList.toggle('oscuro', modoOscuro);
-     actualizarColoresPostits();
-     localStorage.setItem('modoOscuro', modoOscuro);
+// Esta función mueve el cursor al final del bloque de escritura
+function moverCursorAlFinal(elemento){
+     let rango = document.createRange();
+     let seleccion = window.getSelection();
+
+     rango.selectNodeContents(elemento);
+     rango.collapse(false);
+
+     seleccion.removeAllRanges();
+     seleccion.addRange(rango);
 }
 
-// Actualiza los colores de todos los Post-its
-function actualizarColoresPostits(){
-     let notas = document.querySelectorAll('.postit');
-     notas.forEach(function(nota){
-          let indice = nota.dataset.colorIndice;
-          nota.style.backgroundColor = modoOscuro ? coloresOscuros[indice] : colores[indice];
-     })
-}
 
+
+/* GUARDAR Y CARGAR POST-ITS */
 // Guarda el estado de la página en ese momento
 function guardarEstado(){
      let notas = document.querySelectorAll('.postit');
@@ -227,6 +252,37 @@ function cargarEstado(){
           alternarModoOscuro();
      }
 }
+
+
+
+/* FUNCIONES EXTRAS */
+// Genera un ángulo entre -5° y 5° de manera aleatoria
+function generarAngulo(){
+     return Math.random() * 10 - 5;
+}
+
+// Devuelve un color dependiendo del indice y si esta seleccionado el modoOscuro
+function obtenerColorPostit(indice){
+     return estado.modoOscuro ? coloresOscuros[indice] : colores[indice];
+}
+
+// Actualiza los colores de todos los Post-its
+function actualizarColoresPostits(){
+     let notas = document.querySelectorAll('.postit');
+     notas.forEach(function(nota){
+          let indice = nota.dataset.colorIndice;
+          nota.style.backgroundColor = obtenerColorPostit(indice);
+     })
+}
+
+// Cambia de modo claro a oscuro y viceversa
+function alternarModoOscuro(){
+     estado.modoOscuro = !estado.modoOscuro;
+     document.body.classList.toggle('oscuro', estado.modoOscuro);
+     actualizarColoresPostits();
+     localStorage.setItem('modoOscuro', estado.modoOscuro);
+}
+
 
 // Al cargar la página se llama a la funcion para cargar estado
 cargarEstado();
