@@ -21,7 +21,7 @@ Aplicación web interactiva que permite crear, editar y borrar post-its en un ta
 ## Uso de IA
 Usé Claude como apoyo para las partes de JavaScript, sobre todo drag & drop, delegación de eventos y depuración de errores. Dos prompts que usé:
 - "Cómo puedo hacer que un elemento se mueva por la pantalla siguiendo al ratón?"
-- ""Cómo puedo hacer que los datos de mi página no se borren al recargarla?"
+- "Cómo puedo hacer que los datos de mi página no se borren al recargarla?"
 
 Verifiqué cada cambio probándolo en el navegador usando la consola como hemos visto en clase. Usé tambien los apuntes de esta asignatura y de la asignatura que cursamos en 1º de carrera para recordar ciertos comandos y para escribir el código de forma más correcta y ordenada.
 
