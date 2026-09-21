@@ -58,6 +58,7 @@ function agregar(texto = '', indiceColor = null, posX = null, posY = null){
      contenido.classList.add('contenido');
      contenido.setAttribute('contenteditable', 'true');
      contenido.textContent = texto;
+     contenido.dataset.textoAnterior = texto;
 
      // Rotación aleatoria entre -5 y 5 porciento
      let angulo = Math.random() * 10 - 5;
