@@ -98,7 +98,8 @@ body.oscuro .contenido {
 }
 
 body.oscuro .botonBorrar {
-     color: #8f8e8e;
+     background: none;
+     color: #aba9a9;
 }
 
   
