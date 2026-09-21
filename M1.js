@@ -18,6 +18,7 @@ botonOscuro.addEventListener('click', alternarModoOscuro);
 // Tecla secreta para modo oscuro
 document.addEventListener('keydown', function(evento){
      if(evento.key === 'Tab'){
+          evento.preventDefault();
           alternarModoOscuro();
      }
 });
@@ -37,7 +38,7 @@ let zIndexActual = 1000;
 let modoOscuro = false;
 
 // Añadir un post-it
-function agregar(texto = '', indiceColor = null, posX = null, posY = null){
+function agregar(texto = '', indiceColor = null, posX = null, posY = null, zIndex = null){
      // Creacion de Post-it
      let nota = document.createElement('div');
      nota.classList.add('postit');
@@ -77,6 +78,12 @@ function agregar(texto = '', indiceColor = null, posX = null, posY = null){
           nota.style.top = posY;
           nota.dataset.posX = posX;
           nota.dataset.posY = posY;
+     }
+     
+     // Si su zIndex ha sido cambiado en el pasado, se cambia aquí
+     if(zIndex !== null){
+          nota.style.zIndex = zIndex;
+          nota.dataset.zIndex = zIndex;
      }
 
      // Crea el post-it en el HTML
@@ -119,8 +126,10 @@ function apretar (evento){
           notaArrastrando.style.left = `${rect.left + window.scrollX}px`;
           notaArrastrando.style.top = `${rect.top + window.scrollY}px`;
           
+          // El post-it se superpone al resto
           zIndexActual++;
           notaArrastrando.style.zIndex = zIndexActual;
+          notaArrastrando.dataset.zIndex = zIndexActual;
 
           // Se hace más grande
           notaArrastrando.style.transform = 'scale(1.1)';
@@ -195,7 +204,8 @@ function guardarEstado(){
                texto: contenido.textContent,
                colorIndice: nota.dataset.colorIndice,
                posX: nota.dataset.posX || null,
-               posY: nota.dataset.posY || null
+               posY: nota.dataset.posY || null,
+               zIndex: nota.dataset.zIndex
           });
      });
      localStorage.setItem('postits', JSON.stringify(datos));
@@ -208,7 +218,7 @@ function cargarEstado(){
           let datos = JSON.parse(datosGuardados);
 
           datos.forEach(function(nota){
-               agregar(nota.texto, Number(nota.colorIndice), nota.posX, nota.posY);
+               agregar(nota.texto, Number(nota.colorIndice), nota.posX, nota.posY, nota.zIndex);
           });
      }
 
