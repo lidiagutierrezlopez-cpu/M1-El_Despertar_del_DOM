@@ -27,12 +27,8 @@ tablero.addEventListener('mousedown', apretar);
 document.addEventListener('mousemove', arrastrar);
 document.addEventListener('mouseup', soltar);
 
-// Escucha cuando escribes para guardar el estado de la página
-tablero.addEventListener('input', function(evento){
-     if(evento.target.classList.contains('contenido')){
-          guardarEstado();
-     }
-});
+// Escucha cuando escribes para guardar el estado de la página y mirar que no te pases del post-it
+tablero.addEventListener('input', escritura);
 
 let notaArrastrando = null;
 let offsetX = 0;
@@ -152,6 +148,22 @@ function soltar(){
           guardarEstado();
      }
      notaArrastrando = null;
+}
+
+// Cuando escribes, se guarda el contenido y se mira que no te pases del post-it
+function escritura(evento){
+     if(evento.target.classList.contains('contenido')){
+          let contenido = evento.target;
+
+          if(contenido.scrollHeight > contenido.clientHeight){
+               alert('Ya no tienes espacio para escribir en este post-it');
+               // Esto elimina lo ultimo que has escrito que sale del post-it
+               contenido.textContent = contenido.dataset.textoAnterior || '';
+          } else {
+               contenido.dataset.textoAnterior = contenido.textContent;
+          }
+          guardarEstado();
+     }
 }
 
 // Cambia de modo claro a oscuro y viceversa
