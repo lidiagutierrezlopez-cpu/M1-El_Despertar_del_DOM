@@ -14,7 +14,7 @@ Aplicación web interactiva que permite crear, editar y borrar post-its en un ta
 - Rotación aleatoria: cada nota se coloca con una ligera inclinacion de entre -5° a 5°.
 - Reiniciar tablero: botón que borra todos los post-its de golpe, incluye una confirmación previa, para evitar borrados accidentales.
 - Panel de control: bloque fijo en la esquina superior izquierda con todos los controles y el título de la página.
-- Modo oscuro: cambia el color de toda la página, incluido los post-its. Se puede activar con el boton o con la tecla 'TAB'.
+- Modo oscuro: cambia el color de toda la página, incluido los post-its. Se puede activar con el botón o escribiendo la palabra 'dark' en cualquier momento.
 - Guardado en 'localStorage' para no perder las notas cuando se recarga la página. Se guarda todo excepto ángulo, ya que prefiero que cambie al recargar.
 - Aviso de espacio agotado, si el texto llega al límite del espacio disponible, aparece un aviso en la pantalla que desaparece en unos segundos.
 
@@ -22,6 +22,7 @@ Aplicación web interactiva que permite crear, editar y borrar post-its en un ta
 Usé Claude como apoyo para las partes de JavaScript, sobre todo drag & drop, delegación de eventos y depuración de errores. Dos prompts que usé:
 - "Cómo puedo hacer que un elemento se mueva por la pantalla siguiendo al ratón?"
 - "Cómo puedo hacer que los datos de mi página no se borren al recargarla?"
+- "¿Cómo puedo hacer que un elemento no se salga de los límites de la pantalla mientras lo arrastro con el ratón?"
 
 Verifiqué cada cambio probándolo en el navegador usando la consola como hemos visto en clase. Usé tambien los apuntes de esta asignatura y de la asignatura que cursamos en 1º de carrera para recordar ciertos comandos y para escribir el código de forma más correcta y ordenada.
 
@@ -36,3 +37,6 @@ Al principio tenía contenteditable="true" en todo el post-it, pero esto causaba
 
 **3. Estado de arrastre agrupado en un objeto `estado`.**
 Al principio tenía `notaArrastrando`, `offsetX`, `offsetY`, etc. como variables globales sueltas. Las agrupé en un único objeto `estado` para dejar claro que representan un mismo concepto (el estado de la interacción del usuario) y reducir variables sueltas en el ámbito global.
+
+**4. Tecla secreta del modo oscuro.**
+Al principio usaba la tecla `Tab` para activar el modo oscuro, pero esto bloqueaba la navegación por teclado del resto de controles de la página (al hacer `preventDefault()` sobre esa tecla). Lo cambié por una secuencia de teclas que forma la palabra "dark", usando un buffer con las últimas 4 teclas pulsadas.
