@@ -20,9 +20,13 @@ botonReiniciar.addEventListener('click', reiniciar);
 botonOscuro.addEventListener('click', alternarModoOscuro);
 
 // Tecla secreta para modo oscuro
+let teclasEscritas = '';
+const palabraSecreta = 'dark';
 document.addEventListener('keydown', function(evento){
-     if(evento.key === 'Tab'){
-          evento.preventDefault();
+     teclasEscritas += evento.key.toLowerCase();
+     teclasEscritas = teclasEscritas.slice(-palabraSecreta.length);
+
+     if(teclasEscritas === palabraSecreta){
           alternarModoOscuro();
      }
 });
