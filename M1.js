@@ -88,14 +88,22 @@ function agregar(texto = '', indiceColor = null, posX = null, posY = null, zInde
      // Si tiene una posicion el post-it, se coloca ahí
      if(posX !== null && posY !== null){
           // Como posX y posY tambien incluye 'px', al parsearlo se elimina, y solo se queda con los números
-          posicionarPostit(nota, parseFloat(posX), parseFloat(posY));
-          nota.dataset.posX = posX;
-          nota.dataset.posY = posY;
+          const x = parseFloat(posX);
+          const y = parseFloat(posY);
+
+          if(!Number.isNaN(x) && !Number.isNaN(y)){
+               posicionarPostit(nota, x, y);
+               nota.dataset.posX = posX;
+               nota.dataset.posY = posY;
+          }
      }
      
      // Si su zIndex ha sido cambiado en el pasado, se cambia aquí
      if(zIndex !== null){
-          aplicarZIndex(nota, zIndex);
+          const z = Number(zIndex);
+          if(!Number.isNaN(z)){
+               aplicarZIndex(nota, z);
+          }
      }
 
      // Crea el post-it en el HTML
@@ -109,8 +117,9 @@ function agregar(texto = '', indiceColor = null, posX = null, posY = null, zInde
 
 // Borrar un post-it
 function borrar(evento){
-     if(evento.target.classList.closest('botonBorrar')){
-          evento.target.parentElement.remove();
+     const boton = elementoDelegado(evento, '.botonBorrar');
+     if(boton){
+          boton.parentElement.remove();
           guardarEstado();
      }
 }
@@ -131,9 +140,10 @@ function reiniciar(){
 /* ======== MOVER POST-ITS ======== */
 // Cuando apretes el agarre del post-it:
 function apretar (evento){
-     if(evento.target.classList.closest('agarre')){
+     const agarre = elementoDelegado(evento, '.agarre');
+     if(agarre){
           // Se pasa del agarre a su 'parent', el post-it
-          estado.notaArrastrando = evento.target.parentElement;
+          estado.notaArrastrando = agarre.parentElement;
 
           // Se calcula la posicion
           const {left, top} = estado.notaArrastrando.getBoundingClientRect();
@@ -202,9 +212,8 @@ function mostrarAviso(mensaje){
 
 // Cuando escribes, se guarda el contenido y se mira que no te pases del post-it
 function escritura(evento){
-     if(evento.target.classList.closest('contenido')){
-          const contenido = evento.target;
-
+     const contenido = elementoDelegado(evento, '.contenido');
+     if(contenido){
           if(contenido.scrollHeight > contenido.clientHeight){
                mostrarAviso('Ya no tienes espacio para escribir en este post-it');
                
@@ -286,6 +295,14 @@ function cargarEstado(){
           datos.forEach(function(nota){
                agregar(nota.texto, Number(nota.colorIndice), nota.posX, nota.posY, nota.zIndex);
           });
+
+          const notas = document.querySelectorAll('.postit');
+          notas.forEach((nota) => {
+               const z = Number(nota.dataset.zIndex);
+               if(!Number.isNaN(z) && z > estado.zIndexActual){
+                    estado.zIndexActual = z;
+               }
+          });
      }
 
      const oscuroGuardado = localStorage.getItem('modoOscuro');
@@ -319,6 +336,12 @@ function aplicarZIndex(nota, valor){
      nota.style.zIndex = valor;
      nota.dataset.zIndex = valor;
 }
+
+// Extraer evento.target.closest(selector)
+function elementoDelegado (evento, selector){
+     return evento.target.closest(selector);
+}
+
 
 // Al cargar la página se llama a la funcion para cargar estado
 cargarEstado();
