@@ -22,7 +22,7 @@ botonOscuro.addEventListener('click', alternarModoOscuro);
 // Tecla secreta para modo oscuro
 let teclasEscritas = '';
 const palabraSecreta = 'dark';
-document.addEventListener('keydown', function(evento){
+document.addEventListener('keydown', (evento) => {
      teclasEscritas += evento.key.toLowerCase();
      teclasEscritas = teclasEscritas.slice(-palabraSecreta.length);
 
@@ -109,7 +109,7 @@ function agregar(texto = '', indiceColor = null, posX = null, posY = null, zInde
 
 // Borrar un post-it
 function borrar(evento){
-     if(evento.target.classList.contains('botonBorrar')){
+     if(evento.target.classList.closest('botonBorrar')){
           evento.target.parentElement.remove();
           guardarEstado();
      }
@@ -131,7 +131,7 @@ function reiniciar(){
 /* ======== MOVER POST-ITS ======== */
 // Cuando apretes el agarre del post-it:
 function apretar (evento){
-     if(evento.target.classList.contains('agarre')){
+     if(evento.target.classList.closest('agarre')){
           // Se pasa del agarre a su 'parent', el post-it
           estado.notaArrastrando = evento.target.parentElement;
 
@@ -202,7 +202,7 @@ function mostrarAviso(mensaje){
 
 // Cuando escribes, se guarda el contenido y se mira que no te pases del post-it
 function escritura(evento){
-     if(evento.target.classList.contains('contenido')){
+     if(evento.target.classList.closest('contenido')){
           const contenido = evento.target;
 
           if(contenido.scrollHeight > contenido.clientHeight){
