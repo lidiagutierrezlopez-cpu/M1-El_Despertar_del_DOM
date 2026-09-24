@@ -49,7 +49,8 @@ const estado = {
 }
 
 
-/* CREACIÓN Y ELIMINACIÓN DE POST-ITS */
+
+/* ======== CREACIÓN Y ELIMINACIÓN DE POST-ITS ======== */
 // Añadir un post-it
 function agregar(texto = '', indiceColor = null, posX = null, posY = null, zIndex = null){
      // Creacion de Post-it
@@ -127,7 +128,7 @@ function reiniciar(){
 
 
 
-/* MOVER POST-ITS */
+/* ======== MOVER POST-ITS ======== */
 // Cuando apretes el agarre del post-it:
 function apretar (evento){
      if(evento.target.classList.contains('agarre')){
@@ -187,7 +188,7 @@ function soltar(){
 
 
 
-/* ESCRITURA EN LOS POST-ITS */
+/* ======== ESCRITURA EN LOS POST-ITS ======== */
 // Crea un aviso pasando un mensaje como parámetro
 function mostrarAviso(mensaje){
      aviso.textContent = mensaje;
@@ -231,7 +232,7 @@ function moverCursorAlFinal(elemento){
 
 
 
-/* MODO OSCURO */
+/* ======== MODO OSCURO ======== */
 // Cambia de modo claro a oscuro y viceversa
 function alternarModoOscuro(){
      estado.modoOscuro = !estado.modoOscuro;
@@ -256,7 +257,7 @@ function actualizarColoresPostits(){
 
 
 
-/* GUARDAR Y CARGAR POST-ITS */
+/* ======== GUARDAR Y CARGAR POST-ITS ======== */
 // Guarda el estado de la página en ese momento
 function guardarEstado(){
      const notas = document.querySelectorAll('.postit');
@@ -295,7 +296,7 @@ function cargarEstado(){
 
 
 
-/* FUNCIONES AUXILIARES */
+/* ======== FUNCIONES AUXILIARES ======== */
 // Genera un ángulo entre -5° y 5° de manera aleatoria
 function generarAngulo(){
      return Math.random() * 10 - 5;
