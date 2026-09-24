@@ -53,7 +53,7 @@ const estado = {
 // Añadir un post-it
 function agregar(texto = '', indiceColor = null, posX = null, posY = null, zIndex = null){
      // Creacion de Post-it
-     let nota = document.createElement('div');
+     const nota = document.createElement('div');
      nota.classList.add('postit');
 
      // Color aleatorio
@@ -64,22 +64,22 @@ function agregar(texto = '', indiceColor = null, posX = null, posY = null, zInde
      nota.style.backgroundColor = obtenerColorPostit(indiceColor);
 
      // Agarre para poder mover el Post-it facilmente
-     let agarre = document.createElement('div');
+     const agarre = document.createElement('div');
      agarre.classList.add('agarre');
 
      // Contenido del Post-it para escribir
-     let contenido = document.createElement('div');
+     const contenido = document.createElement('div');
      contenido.classList.add('contenido');
      contenido.setAttribute('contenteditable', 'true');
      contenido.textContent = texto;
      contenido.dataset.textoAnterior = texto;
 
      // Rotación aleatoria entre -5 y 5 porciento
-     let angulo = generarAngulo();
+     const angulo = generarAngulo();
      girarPostit(nota, angulo);
 
      // Botón para borrar
-     let botonBorrar = document.createElement('button');
+     const botonBorrar = document.createElement('button');
      botonBorrar.classList.add('botonBorrar');
      botonBorrar.textContent = 'x';
      botonBorrar.setAttribute('contenteditable', 'false');
@@ -116,7 +116,7 @@ function borrar(evento){
 
 // Borra todos los post-its
 function reiniciar(){
-     let confirmar = confirm('¿Seguro que quieres borrar todos los post-its?');
+     const confirmar = confirm('¿Seguro que quieres borrar todos los post-its?');
      if(confirmar){
           /*   innerHTML vacía todo el tablero, un bucle remove() sería
                innecesario porque no hay que conservar nada del contenido */
@@ -135,7 +135,7 @@ function apretar (evento){
           estado.notaArrastrando = evento.target.parentElement;
 
           // Se calcula la posicion
-          let {left, top} = estado.notaArrastrando.getBoundingClientRect();
+          const {left, top} = estado.notaArrastrando.getBoundingClientRect();
           estado.offsetX = evento.clientX - left;
           estado.offsetY = evento.clientY - top;
 
@@ -154,13 +154,13 @@ function apretar (evento){
 // Cuando arrastras el agarre del post-it:
 function arrastrar(evento){
      if(estado.notaArrastrando){
-          let {offsetWidth: anchoNota, offsetHeight: altoNota} = estado.notaArrastrando;
+          const {offsetWidth: anchoNota, offsetHeight: altoNota} = estado.notaArrastrando;
 
           let nuevoLeft = evento.clientX - estado.offsetX + window.scrollX;
           let nuevoTop = evento.clientY - estado.offsetY + window.scrollY;
 
-          let maxLeft = window.scrollX + window.innerWidth - anchoNota;
-          let maxTop = window.scrollY + window.innerHeight - altoNota;
+          const maxLeft = window.scrollX + window.innerWidth - anchoNota;
+          const maxTop = window.scrollY + window.innerHeight - altoNota;
 
           nuevoLeft = Math.max(window.scrollX, Math.min(nuevoLeft, maxLeft));
           nuevoTop = Math.max(window.scrollY, Math.min(nuevoTop, maxTop));
@@ -173,7 +173,7 @@ function arrastrar(evento){
 function soltar(){
      if(estado.notaArrastrando){
           // Se cambia el ángulo del post-it al soltarlo
-          let angulo = generarAngulo();
+          const angulo = generarAngulo();
           girarPostit(estado.notaArrastrando, angulo);
           
           // Guardamos la posicion del post-it al soltarlo
@@ -202,13 +202,13 @@ function mostrarAviso(mensaje){
 // Cuando escribes, se guarda el contenido y se mira que no te pases del post-it
 function escritura(evento){
      if(evento.target.classList.contains('contenido')){
-          let contenido = evento.target;
+          const contenido = evento.target;
 
           if(contenido.scrollHeight > contenido.clientHeight){
                mostrarAviso('Ya no tienes espacio para escribir en este post-it');
                
                // Esto elimina lo ultimo que has escrito que sale del post-it
-               contenido.textContent = contenido.dataset.textoAnterior || '';
+               contenido.textContent = contenido.dataset.textoAnterior ?? '';
                moverCursorAlFinal(contenido);
           } else {
                contenido.dataset.textoAnterior = contenido.textContent;
@@ -219,8 +219,8 @@ function escritura(evento){
 
 // Esta función mueve el cursor al final del bloque de escritura
 function moverCursorAlFinal(elemento){
-     let rango = document.createRange();
-     let seleccion = window.getSelection();
+     const rango = document.createRange();
+     const seleccion = window.getSelection();
 
      rango.selectNodeContents(elemento);
      rango.collapse(false);
@@ -247,10 +247,10 @@ function obtenerColorPostit(indice){
 
 // Actualiza los colores de todos los Post-its
 function actualizarColoresPostits(){
-     let notas = document.querySelectorAll('.postit');
+     const notas = document.querySelectorAll('.postit');
      notas.forEach((nota) => {
-          let indice = nota.dataset.colorIndice;
-          nota.style.backgroundColor = obtenerColorPostit(indice);
+          const indiceColor = nota.dataset.colorIndice;
+          nota.style.backgroundColor = obtenerColorPostit(indiceColor);
      });
 }
 
@@ -259,18 +259,18 @@ function actualizarColoresPostits(){
 /* GUARDAR Y CARGAR POST-ITS */
 // Guarda el estado de la página en ese momento
 function guardarEstado(){
-     let notas = document.querySelectorAll('.postit');
-     let datos = [];
+     const notas = document.querySelectorAll('.postit');
+     const datos = [];
 
      // Para cada nota se guarda todos sus atributos en datos
      notas.forEach((nota) => {
-          let contenido = nota.querySelector('.contenido');
+          const contenido = nota.querySelector('.contenido');
           datos.push({
                texto: contenido.textContent,
                colorIndice: nota.dataset.colorIndice,
                posX: nota.dataset.posX || null,
                posY: nota.dataset.posY || null,
-               zIndex: nota.dataset.zIndex
+               zIndex: nota.dataset.zIndex || null
           });
      });
      localStorage.setItem('postits', JSON.stringify(datos));
@@ -278,16 +278,16 @@ function guardarEstado(){
 
 // Agrega todos los post-its que estan guardados en memoria
 function cargarEstado(){
-     let datosGuardados = localStorage.getItem('postits');
+     const datosGuardados = localStorage.getItem('postits');
      if(datosGuardados){
-          let datos = JSON.parse(datosGuardados);
+          const datos = JSON.parse(datosGuardados);
 
           datos.forEach(function(nota){
                agregar(nota.texto, Number(nota.colorIndice), nota.posX, nota.posY, nota.zIndex);
           });
      }
 
-     let oscuroGuardado = localStorage.getItem('modoOscuro');
+     const oscuroGuardado = localStorage.getItem('modoOscuro');
      if(oscuroGuardado === 'true'){
           alternarModoOscuro();
      }
