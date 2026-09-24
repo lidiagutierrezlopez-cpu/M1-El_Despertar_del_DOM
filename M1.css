@@ -2,7 +2,7 @@
      box-sizing: border-box;
 }
 
-body{
+body {
      font-family: Verdana, sans-serif;
      transition: background-color 0.3s, color 0.3s;
 }
@@ -16,7 +16,7 @@ button {
      font-family: inherit;
 }
 
-#tablero{
+#tablero {
      display: flex;
      flex-wrap: wrap;
      gap: 20px;
@@ -25,7 +25,7 @@ button {
      isolation: isolate;
 }
 
-#panelControl{
+#panelControl {
      position: fixed;
      top: 0;
      left: 0;
@@ -38,7 +38,7 @@ button {
      border-bottom-right-radius: 20px;
 }
 
-#aviso{
+#aviso {
      position: fixed;
      bottom: 20px;
      left: 50%;
@@ -53,12 +53,12 @@ button {
      transition: opacity 0.3s, transform 0.3s;
      z-index: 999;
 }
-#aviso.visible{
+#aviso.visible {
      opacity: 1;
      transform: translateX(-50%) translateY(0);
 }
 
-.postit{
+.postit {
      width: 200px;
      min-height: 200px;
      box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
@@ -66,11 +66,11 @@ button {
      background-color: var(--fondo);
      transition: transform 0.15s ease, background-color 0.3s;
 }
-.postit[data-color-indice="0"]{ --fondo: #fff59d; --fondo-oscuro: #7d6f1f; }
-.postit[data-color-indice="1"]{ --fondo: #d2fad4; --fondo-oscuro: #2f5c3f; }
-.postit[data-color-indice="2"]{ --fondo: #b3e5fc; --fondo-oscuro: #1f4e66; }
-.postit[data-color-indice="3"]{ --fondo: #efc3f7; --fondo-oscuro: #5c3966; }
-.postit[data-color-indice="4"]{ --fondo: #fdbfe2; --fondo-oscuro: #6b3350; }
+.postit[data-color-indice="0"] { --fondo: #fff59d; --fondo-oscuro: #7d6f1f; }
+.postit[data-color-indice="1"] { --fondo: #d2fad4; --fondo-oscuro: #2f5c3f; }
+.postit[data-color-indice="2"] { --fondo: #b3e5fc; --fondo-oscuro: #1f4e66; }
+.postit[data-color-indice="3"] { --fondo: #efc3f7; --fondo-oscuro: #5c3966; }
+.postit[data-color-indice="4"] { --fondo: #fdbfe2; --fondo-oscuro: #6b3350; }
 
 .agarre {
      height: 34px;
@@ -81,7 +81,7 @@ button {
      cursor: grabbing;
 }
 
-.contenido{
+.contenido {
      width: 100%;
      height: 150px;
      outline: none;
@@ -106,7 +106,7 @@ button {
 }
 
 /* Modo oscuro: */
-body.oscuro{
+body.oscuro {
      background-color: #121212;
      color: #f0f0f0;
 }
@@ -116,17 +116,17 @@ body.oscuro button {
      color: #b9b9b9;
 }
 
-body.oscuro #panelControl{
+body.oscuro #panelControl {
      background-color: #2a2a2a;
      color: #f0f0f0;
 }
 
-body.oscuro #aviso{
+body.oscuro #aviso {
      background-color: #2a2a2a;
      color: #b9b9b9;
 }
 
-body.oscuro .postit{
+body.oscuro .postit {
      background-color: var(--fondo-oscuro);
 }
 

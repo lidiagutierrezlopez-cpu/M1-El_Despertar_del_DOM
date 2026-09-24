@@ -86,14 +86,13 @@ function reiniciar(){
 // Cuando apretes el agarre del post-it:
 function apretar(evento){
      const agarre = evento.target.closest('.agarre');
-
      if(!agarre) return;
      evento.preventDefault();
 
      // Se pasa del agarre al post-it
      estado.notaArrastrando = agarre.closest('.postit');
 
-     // Se calcula la posicion
+     // Se calcula la posición
      const {left, top} = estado.notaArrastrando.getBoundingClientRect();
      estado.offsetX = evento.clientX - left;
      estado.offsetY = evento.clientY - top;
@@ -141,6 +140,23 @@ function soltar(){
 
 
 /* ======== ESCRITURA EN LOS POST-ITS ======== */
+// Cuando escribes, se guarda el contenido y se mira que no te pases del post-it
+function escribir(evento){
+     const contenido = evento.target.closest('.contenido');
+     if(!contenido) return;
+
+     if(contenido.scrollHeight > contenido.clientHeight){
+          mostrarAviso('Ya no tienes espacio para escribir en este post-it');
+          
+          // Esto elimina lo último que has escrito que sale del post-it
+          contenido.innerText = contenido.dataset.textoAnterior ?? '';
+          moverCursorAlFinal(contenido);
+     } else {
+          contenido.dataset.textoAnterior = contenido.innerText;
+     }
+     guardarEstado();
+}
+
 // Crea un aviso pasando un mensaje como parámetro
 function mostrarAviso(mensaje){
      aviso.textContent = mensaje;
@@ -150,23 +166,6 @@ function mostrarAviso(mensaje){
      estado.timeoutAviso = setTimeout(() => {
           aviso.classList.remove('visible');
      }, DURACION_AVISO);
-}
-
-// Cuando escribes, se guarda el contenido y se mira que no te pases del post-it
-function escribir(evento){
-     const contenido = evento.target.closest('.contenido');
-     if(contenido){
-          if(contenido.scrollHeight > contenido.clientHeight){
-               mostrarAviso('Ya no tienes espacio para escribir en este post-it');
-               
-               // Esto elimina lo último que has escrito que sale del post-it
-               contenido.innerText = contenido.dataset.textoAnterior ?? '';
-               moverCursorAlFinal(contenido);
-          } else {
-               contenido.dataset.textoAnterior = contenido.innerText;
-          }
-          guardarEstado();
-     }
 }
 
 // Esta función mueve el cursor al final del bloque de escritura
@@ -189,7 +188,7 @@ function guardarEstado(){
      const notas = tablero.querySelectorAll('.postit');
      const datos = [];
 
-     // Para cada nota se guarda todos sus atributos en datos
+     // Para cada nota se guardan todos sus atributos en datos
      notas.forEach((nota) => {
           const x = parseFloat(nota.style.left);
           const y = parseFloat(nota.style.top);
@@ -231,9 +230,7 @@ function cargarEstado(){
 // Comprueba si has escrito la palabra secreta
 function comprobarPalabraSecreta(evento){
      // Ignora lo que se escribe dentro de un post-it y las teclas especiales
-     if(evento.target.isContentEditable || evento.key.length !== 1){
-          return;
-     }
+     if(evento.target.isContentEditable || evento.key.length !== 1) return;
 
      estado.teclasEscritas += evento.key.toLowerCase();
      // Solo guarda la cantidad de letras que tenga la palabra secreta
@@ -261,7 +258,7 @@ function crearElemento(etiqueta, clase){
      return elemento;
 }
 
-// Genera un ángulo entre -5° y 5° de manera aleatoria
+// Genera un ángulo entre -ANGULO_MAXIMO y ANGULO_MAXIMO de manera aleatoria
 function generarAngulo(){
      return Math.random() * ANGULO_MAXIMO * 2 - ANGULO_MAXIMO;
 }
