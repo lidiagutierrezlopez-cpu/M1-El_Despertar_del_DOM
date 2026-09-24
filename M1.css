@@ -1,3 +1,21 @@
+* {
+     box-sizing: border-box;
+}
+
+body{
+     font-family: Verdana, sans-serif;
+     transition: background-color 0.3s, color 0.3s;
+}
+
+button {
+     border: 1px solid transparent;
+     padding: 10px;
+     border-radius: 5px;
+     font-size: 14px;
+     cursor: pointer;
+     font-family: inherit;
+}
+
 #tablero{
      display: flex;
      flex-wrap: wrap;
@@ -5,49 +23,6 @@
      padding: 20px;
      margin-left: 170px;
      isolation: isolate;
-}
-
-.postit{
-     width: 200px;
-     min-height: 200px;
-     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
-     position: relative;
-     box-sizing: border-box;
-     transition: transform 0.15s ease;
-}
-
-.agarre {
-     height: 34px;
-     background-color: rgba(0, 0, 0, 0.08);
-     cursor: grab;
-}
-.agarre:active {
-     cursor: grabbing;
-}
-
-.contenido{
-     width: 100%;
-     height: 150px;
-     outline: none;
-     font-size: 13px;
-     white-space: pre-wrap;
-     box-sizing: border-box;
-     padding: 0 10px;
-}
-.contenido:empty::before {
-     content: 'Escribe aquí...';
-     color: #999;
-}
-
-.botonBorrar {
-     position: absolute;
-     top: 5px;
-     right: 5px;
-     background: none;
-     border: none;
-     font-size: 18px;
-     color: #555;
-     padding: 0;
 }
 
 #panelControl{
@@ -83,25 +58,62 @@
      transform: translateX(-50%) translateY(0);
 }
 
-button {
-     border: 1px solid transparent;
-     padding: 10px;
-     border-radius: 5px;
-     font-size: 14px;
-     cursor: pointer;
-     box-sizing: border-box;
-     font-family: inherit;
+.postit{
+     width: 200px;
+     min-height: 200px;
+     box-shadow: 3px 3px 8px rgba(0, 0, 0, 0.3);
+     position: relative;
+     background-color: var(--fondo);
+     transition: transform 0.15s ease, background-color 0.3s;
+}
+.postit[data-color-indice="0"]{ --fondo: #fff59d; --fondo-oscuro: #7d6f1f; }
+.postit[data-color-indice="1"]{ --fondo: #d2fad4; --fondo-oscuro: #2f5c3f; }
+.postit[data-color-indice="2"]{ --fondo: #b3e5fc; --fondo-oscuro: #1f4e66; }
+.postit[data-color-indice="3"]{ --fondo: #efc3f7; --fondo-oscuro: #5c3966; }
+.postit[data-color-indice="4"]{ --fondo: #fdbfe2; --fondo-oscuro: #6b3350; }
+
+.agarre {
+     height: 34px;
+     background-color: rgba(0, 0, 0, 0.08);
+     cursor: grab;
+}
+.agarre:active {
+     cursor: grabbing;
 }
 
-body{
-     font-family: Verdana, sans-serif;
-     transition: background-color 0.3s, color 0.3s;
+.contenido{
+     width: 100%;
+     height: 150px;
+     outline: none;
+     font-size: 13px;
+     white-space: pre-wrap;
+     padding: 0 10px;
+}
+.contenido:empty::before {
+     content: 'Escribe aquí...';
+     color: #999;
+}
+
+.botonBorrar {
+     position: absolute;
+     top: 5px;
+     right: 5px;
+     background: none;
+     border: none;
+     font-size: 18px;
+     color: #555;
+     padding: 0;
 }
 
 /* Modo oscuro: */
 body.oscuro{
      background-color: #121212;
      color: #f0f0f0;
+}
+
+body.oscuro button {
+     background-color: #444;
+     color: #b9b9b9;
 }
 
 body.oscuro #panelControl{
@@ -114,9 +126,8 @@ body.oscuro #aviso{
      color: #b9b9b9;
 }
 
-body.oscuro button {
-     background-color: #444;
-     color: #b9b9b9;
+body.oscuro .postit{
+     background-color: var(--fondo-oscuro);
 }
 
 body.oscuro .contenido {
@@ -127,5 +138,3 @@ body.oscuro .botonBorrar {
      background: none;
      color: #969696;
 }
-
-  
