@@ -30,7 +30,7 @@ const estado = {
 function agregar({texto = '', colorIndice = null, posX = null, posY = null, zIndex = null} = {}){
      const nota = crearElemento('div', 'postit');
      const agarre = crearElemento('div', 'agarre');
-     const contenido = crearElemento('div', 'contenido');
+     const contenido = crearElemento('textarea', 'contenido');
      const botonBorrar = crearElemento('button', 'botonBorrar');
 
      // Color guardado, y si no hay, uno aleatorio
@@ -50,8 +50,8 @@ function agregar({texto = '', colorIndice = null, posX = null, posY = null, zInd
      }
 
      // Zona de texto editable
-     contenido.contentEditable = 'true';
-     contenido.textContent = texto;
+     contenido.placeholder = 'Escribe aquí...';
+     contenido.value = texto;
      contenido.dataset.textoAnterior = texto;
 
      // Botón para borrar
@@ -149,10 +149,9 @@ function escribir(evento){
           mostrarAviso('Ya no tienes espacio para escribir en este post-it');
           
           // Esto elimina lo último que has escrito que sale del post-it
-          contenido.innerText = contenido.dataset.textoAnterior ?? '';
-          moverCursorAlFinal(contenido);
+          contenido.value = contenido.dataset.textoAnterior;
      } else {
-          contenido.dataset.textoAnterior = contenido.innerText;
+          contenido.dataset.textoAnterior = contenido.value;
      }
      guardarEstado();
 }
@@ -168,25 +167,13 @@ function mostrarAviso(mensaje){
      }, DURACION_AVISO);
 }
 
-// Esta función mueve el cursor al final del bloque de escritura
-function moverCursorAlFinal(elemento){
-     const rango = document.createRange();
-     const seleccion = window.getSelection();
-
-     rango.selectNodeContents(elemento);
-     rango.collapse(false);
-
-     seleccion.removeAllRanges();
-     seleccion.addRange(rango);
-}
-
 
 
 /* ======== MODO OSCURO ======== */
 // Comprueba si has escrito la palabra secreta
 function comprobarPalabraSecreta(evento){
      // Ignora lo que se escribe dentro de un post-it y las teclas especiales
-     if(evento.target.isContentEditable || evento.key.length !== 1) return;
+     if(evento.target.matches('.contenido') || evento.key.length !== 1) return;
 
      estado.teclasEscritas += evento.key.toLowerCase();
      // Solo guarda la cantidad de letras que tenga la palabra secreta
@@ -217,7 +204,7 @@ function guardarEstado(){
           const x = parseFloat(nota.style.left);
           const y = parseFloat(nota.style.top);
           datos.push({
-               texto: nota.querySelector('.contenido').innerText,
+               texto: nota.querySelector('.contenido').value,
                colorIndice: Number(nota.dataset.colorIndice),
                posX: Number.isNaN(x) ? null : x,
                posY: Number.isNaN(y) ? null : y,
