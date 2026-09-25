@@ -182,6 +182,30 @@ function moverCursorAlFinal(elemento){
 
 
 
+/* ======== MODO OSCURO ======== */
+// Comprueba si has escrito la palabra secreta
+function comprobarPalabraSecreta(evento){
+     // Ignora lo que se escribe dentro de un post-it y las teclas especiales
+     if(evento.target.isContentEditable || evento.key.length !== 1) return;
+
+     estado.teclasEscritas += evento.key.toLowerCase();
+     // Solo guarda la cantidad de letras que tenga la palabra secreta
+     estado.teclasEscritas = estado.teclasEscritas.slice(-PALABRA_SECRETA.length);
+
+     if(estado.teclasEscritas === PALABRA_SECRETA){
+          alternarModoOscuro();
+     }
+}
+
+// Cambia de modo claro a oscuro y viceversa
+function alternarModoOscuro(){
+     estado.modoOscuro = !estado.modoOscuro;
+     document.body.classList.toggle('oscuro', estado.modoOscuro);
+     localStorage.setItem('modoOscuro', estado.modoOscuro);
+}
+
+
+
 /* ======== GUARDAR Y CARGAR POST-ITS ======== */
 // Guarda el estado de la página en ese momento
 function guardarEstado(){
@@ -222,30 +246,6 @@ function cargarEstado(){
                estado.zIndexActual = nota.zIndex;
           }
      });
-}
-
-
-
-/* ======== MODO OSCURO ======== */
-// Comprueba si has escrito la palabra secreta
-function comprobarPalabraSecreta(evento){
-     // Ignora lo que se escribe dentro de un post-it y las teclas especiales
-     if(evento.target.isContentEditable || evento.key.length !== 1) return;
-
-     estado.teclasEscritas += evento.key.toLowerCase();
-     // Solo guarda la cantidad de letras que tenga la palabra secreta
-     estado.teclasEscritas = estado.teclasEscritas.slice(-PALABRA_SECRETA.length);
-
-     if(estado.teclasEscritas === PALABRA_SECRETA){
-          alternarModoOscuro();
-     }
-}
-
-// Cambia de modo claro a oscuro y viceversa
-function alternarModoOscuro(){
-     estado.modoOscuro = !estado.modoOscuro;
-     document.body.classList.toggle('oscuro', estado.modoOscuro);
-     localStorage.setItem('modoOscuro', estado.modoOscuro);
 }
 
 
