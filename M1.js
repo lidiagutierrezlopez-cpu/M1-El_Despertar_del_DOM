@@ -87,43 +87,47 @@ function reiniciar(){
 function apretar(evento){
      const agarre = evento.target.closest('.agarre');
      if(!agarre) return;
+     // Esto evita seleccionar texto al arrastrar
      evento.preventDefault();
 
      // Se pasa del agarre al post-it
-     estado.notaArrastrando = agarre.closest('.postit');
+     const nota = agarre.closest('.postit');
+     estado.notaArrastrando = nota;
 
      // Se calcula la posición
-     const {left, top} = estado.notaArrastrando.getBoundingClientRect();
+     const {left, top} = nota.getBoundingClientRect();
      estado.offsetX = evento.clientX - left;
      estado.offsetY = evento.clientY - top;
 
      // Se posiciona el post-it
-     posicionarPostit(estado.notaArrastrando, left + window.scrollX, top + window.scrollY);
+     posicionarPostit(nota, left + window.scrollX, top + window.scrollY);
      
      // El post-it se superpone al resto
-     estado.zIndexActual++;
-     estado.notaArrastrando.style.zIndex = estado.zIndexActual;
+     nota.style.zIndex = ++estado.zIndexActual;
 
      // Se hace más grande
-     estado.notaArrastrando.style.transform = `scale(${ESCALA_ARRASTRE})`;
+     nota.style.transform = `scale(${ESCALA_ARRASTRE})`;
 }
 
 // Cuando arrastras el agarre del post-it:
 function arrastrar(evento){
-     if(!estado.notaArrastrando) return;
+     const nota = estado.notaArrastrando;
+     if(!nota) return;
 
-     const {offsetWidth: anchoNota, offsetHeight: altoNota} = estado.notaArrastrando;
+     // Donde quedaría la esquina del post-it al seguir el ratón
+     const xDeseada = evento.clientX - estado.offsetX;
+     const yDeseada = evento.clientY - estado.offsetY;
 
-     let nuevoLeft = evento.clientX - estado.offsetX + window.scrollX;
-     let nuevoTop = evento.clientY - estado.offsetY + window.scrollY;
+     // Hasta dónde puede llegar sin que ninguna parte salga de la pantalla
+     const xMaxima = window.innerWidth - nota.offsetWidth;
+     const yMaxima = window.innerHeight - nota.offsetHeight;
 
-     const maxLeft = window.scrollX + window.innerWidth - anchoNota;
-     const maxTop = window.scrollY + window.innerHeight - altoNota;
+     // Se limita entre el borde de la pantalla (0) y el máximo
+     const x = limitar(xDeseada, 0, xMaxima);
+     const y = limitar(yDeseada, 0, yMaxima);
 
-     nuevoLeft = Math.max(window.scrollX, Math.min(nuevoLeft, maxLeft));
-     nuevoTop = Math.max(window.scrollY, Math.min(nuevoTop, maxTop));
-
-     posicionarPostit(estado.notaArrastrando, nuevoLeft, nuevoTop);
+     // Se suma el scroll para pasar a coordenadas del documento
+     posicionarPostit(nota, x + window.scrollX, y + window.scrollY);
 }
 
 // Cuando sueltas el agarre del post-it:
@@ -243,6 +247,11 @@ function crearElemento(etiqueta, clase){
      const elemento = document.createElement(etiqueta);
      elemento.classList.add(clase);
      return elemento;
+}
+
+// Devuelve el valor dentro del rango [min, max]
+function limitar(valor, minimo, maximo){
+     return Math.max(minimo, Math.min(valor, maximo));
 }
 
 // Genera un ángulo entre -ANGULO_MAXIMO y ANGULO_MAXIMO de manera aleatoria
