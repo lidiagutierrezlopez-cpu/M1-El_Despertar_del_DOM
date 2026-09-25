@@ -36,8 +36,12 @@ button {
      gap: 10px;
      z-index: 100;
      border-bottom-right-radius: 20px;
+     transition: background-color 0.3s, color 0.3s;
 }
-#panelControl button:hover{
+#panelControl button {
+     transition: background-color 0.1s, color 0.1s;
+}
+#panelControl button:hover {
      background-color: #304e53;
      color: #a2e8f6;
 }
@@ -88,7 +92,7 @@ button {
 .contenido {
      display: block;
      width: 100%;
-     height: 150px;
+     height: 166px;
      padding: 0 10px;
      border: none;
      outline: none;
@@ -98,7 +102,6 @@ button {
      color: inherit;
      font: inherit;
      font-size: 13px;
-     height: 166px;
 }
 .contenido::placeholder {
      color: #999;
@@ -117,18 +120,22 @@ button {
 
 /* Modo oscuro: */
 body.oscuro {
-     background-color: #121212;
+     background-color: #242424;
      color: #f0f0f0;
 }
 
 body.oscuro button {
-     background-color: #444;
-     color: #b9b9b9;
+     background-color: #242424;
+     color: #f0f0f0;
 }
 
 body.oscuro #panelControl {
-     background-color: #2a2a2a;
+     background-color: #304e53;
      color: #f0f0f0;
+}
+body.oscuro #panelControl button:hover{
+     background-color: #a2e8f6;
+     color: #304e53;
 }
 
 body.oscuro #aviso {
