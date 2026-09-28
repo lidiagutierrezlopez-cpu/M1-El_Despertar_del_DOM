@@ -56,6 +56,7 @@ function agregar({texto = '', colorIndice = null, posX = null, posY = null, zInd
 
      // Botón para borrar
      botonBorrar.textContent = 'x';
+     botonBorrar.setAttribute('aria-label', 'Borrar nota');
 
      // Crea el post-it en el HTML
      nota.append(agarre, contenido, botonBorrar);
@@ -177,7 +178,7 @@ function mostrarAviso(mensaje){
 // Comprueba si has escrito la palabra secreta
 function comprobarPalabraSecreta(evento){
      // Ignora lo que se escribe dentro de un post-it y las teclas especiales
-     if(evento.target.matches('.contenido') || evento.key.length !== 1) return;
+     if(evento.target.matches('.contenido') || evento.key.length !== 1 || evento.repeat) return;
 
      estado.teclasEscritas += evento.key.toLowerCase();
      // Solo guarda la cantidad de letras que tenga la palabra secreta
@@ -207,12 +208,13 @@ function guardarEstado(){
      notas.forEach((nota) => {
           const x = parseFloat(nota.style.left);
           const y = parseFloat(nota.style.top);
+          const z = parseInt(nota.style.zIndex);
           datos.push({
                texto: nota.querySelector('.contenido').value,
                colorIndice: Number(nota.dataset.colorIndice),
                posX: Number.isNaN(x) ? null : x,
                posY: Number.isNaN(y) ? null : y,
-               zIndex: Number(nota.style.zIndex) || null
+               zIndex: Number.isNaN(z) ? null : z
           });
      });
      localStorage.setItem('postits', JSON.stringify(datos));
@@ -291,6 +293,11 @@ tablero.addEventListener('input', escribir);
 document.addEventListener('mousemove', arrastrar);
 document.addEventListener('mouseup', soltar);
 document.addEventListener('keydown', comprobarPalabraSecreta);
+
+// Soporte táctil:
+tablero.addEventListener('pointerdown', apretar);
+document.addEventListener('pointermove', arrastrar);
+document.addEventListener('pointerup', soltar);
 
 // Al cargar la página se llama a la función para cargar estado
 cargarEstado();

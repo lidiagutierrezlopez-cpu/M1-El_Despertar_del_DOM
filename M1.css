@@ -41,7 +41,8 @@ button {
 #panelControl button {
      transition: background-color 0.1s, color 0.1s;
 }
-#panelControl button:hover {
+#panelControl button:hover,
+#panelControl button:focus-visible {
      background-color: #304e53;
      color: #a2e8f6;
 }
@@ -84,6 +85,7 @@ button {
      height: 34px;
      background-color: rgba(0, 0, 0, 0.08);
      cursor: grab;
+     touch-action: none;
 }
 .agarre:active {
      cursor: grabbing;
@@ -133,7 +135,8 @@ body.oscuro #panelControl {
      background-color: #304e53;
      color: #f0f0f0;
 }
-body.oscuro #panelControl button:hover{
+body.oscuro #panelControl button:hover,
+body.oscuro #panelControl button:focus-visible {
      background-color: #a2e8f6;
      color: #304e53;
 }
