@@ -7,16 +7,18 @@ Aplicación web interactiva que permite crear, editar y borrar post-its en un ta
 ## Funcionalidades implementadas
 - Añadir post-it: un botón en el panel de control que crea una nueva nota en el tablero.
 - Editar contenido: cada post-it tiene una zona de texto editable.
-- Mover post-it: puedes mover cada post-it a donde quieras del tablero, y automáticamente se solapa sobre el resto de post-its.
+- Mover post-it: puedes mover cada post-it por la pantalla, con el ratón o con el dedo, y automáticamente se solapa sobre el resto de post-its.
 - Texto explicativo dinámico: mientras la nota está vacía, muestra "Escribe aquí..." en gris, y desaparece automáticamente al empezar a escribir.
 - Borrar post-it individual: cada nota tiene un botón "x" que la elimina. 
 - Color aleatorio: a cada post-it, al crearse, se le asigna un color pastel elegido al azar de una paleta predefinida.
-- Rotación aleatoria: cada nota se coloca con una ligera inclinación de entre -5° a 5°.
+- Rotación aleatoria: cada nota se coloca con una ligera inclinación de entre -5° y 5°.
 - Reiniciar tablero: botón que borra todos los post-its de golpe, incluye una confirmación previa, para evitar borrados accidentales.
 - Panel de control: bloque fijo en la esquina superior izquierda con todos los controles y el título de la página.
 - Modo oscuro: cambia el color de toda la página, incluidos los post-its. Se puede activar con el botón o escribiendo la palabra 'dark' fuera de las notas.
 - Guardado en 'localStorage' para no perder las notas cuando se recarga la página. Se guarda todo excepto ángulo, ya que prefiero que cambie al recargar.
 - Aviso de espacio agotado: si el texto llega al límite del espacio disponible, aparece un aviso en la pantalla que desaparece en unos segundos.
+- Accesibilidad: el botón 'x' tiene una etiqueta descriptiva para los lectores de pantalla. Los avisos y botones del panel se resaltan también al navegador con el teclado.
+- Efecto hover en los botones del panel de control, que cambia con el modo oscuro.
 
 ## Uso de IA
 Usé Claude como apoyo para las partes de JavaScript, sobre todo drag & drop, delegación de eventos y depuración de errores. Tres prompts que usé:
@@ -39,4 +41,7 @@ Al principio tenía contenteditable="true" en todo el post-it, pero esto causaba
 Al principio tenía `notaArrastrando`, `offsetX`, `offsetY`, etc. como variables globales sueltas. Las agrupé en un único objeto `estado` para dejar claro que representan un mismo concepto (el estado de la interacción del usuario) y reducir variables sueltas en el ámbito global.
 
 **4. Palabra secreta del modo oscuro.**
-Al principio usaba la tecla `Tab` para activar el modo oscuro, pero esto bloqueaba la navegación por teclado del resto de controles de la página (al hacer `preventDefault()` sobre esa tecla). Lo cambié por una secuencia de teclas que forma la palabra "dark", usando un buffer con las últimas 4 teclas pulsadas. Tambien añadí que se ignoren las teclas especiales y lo que se escribe dentro de los post-its.
+Al principio usaba la tecla `Tab` para activar el modo oscuro, pero esto bloqueaba la navegación por teclado del resto de controles de la página (al hacer `preventDefault()` sobre esa tecla). Lo cambié por una secuencia de teclas que forma la palabra "dark", usando un buffer con las últimas 4 teclas pulsadas. También añadí que se ignoren las teclas especiales, las teclas mantenidas y lo que se escribe dentro de los post-its.
+
+**5. De contenteditable a textarea.**
+La zona de texto era un div con contenteditable, pero al pulsar Enter el navegador inserta etiquetas <div> y <br> en vez de saltos de línea. Al pasarse de espacios y restausar el texto anterior, este quedaba más alto que el original, y la nota se bloqueaba. Lo cambié por <textarea>, que guarda los saltos de línea y los restaura igual.

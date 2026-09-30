@@ -177,7 +177,7 @@ function mostrarAviso(mensaje){
 /* ======== MODO OSCURO ======== */
 // Comprueba si has escrito la palabra secreta
 function comprobarPalabraSecreta(evento){
-     // Ignora lo que se escribe dentro de un post-it y las teclas especiales
+     // Ignora lo que se escribe dentro de un post-it, las teclas especiales y las mantenidas pulsadas
      if(evento.target.matches('.contenido') || evento.key.length !== 1 || evento.repeat) return;
 
      estado.teclasEscritas += evento.key.toLowerCase();
@@ -286,18 +286,13 @@ botonOscuro.addEventListener('click', alternarModoOscuro);
 
 // Tablero: borrar, apretar y escribir
 tablero.addEventListener('click', borrar);
-tablero.addEventListener('mousedown', apretar);
+tablero.addEventListener('pointerdown', apretar);
 tablero.addEventListener('input', escribir);
 
-// Documento: arrastre, palabra secreta
-document.addEventListener('mousemove', arrastrar);
-document.addEventListener('mouseup', soltar);
-document.addEventListener('keydown', comprobarPalabraSecreta);
-
-// Soporte táctil:
-tablero.addEventListener('pointerdown', apretar);
+// Documento: arrastre (ratón y táctil) y palabra secreta
 document.addEventListener('pointermove', arrastrar);
 document.addEventListener('pointerup', soltar);
+document.addEventListener('keydown', comprobarPalabraSecreta);
 
 // Al cargar la página se llama a la función para cargar estado
 cargarEstado();
